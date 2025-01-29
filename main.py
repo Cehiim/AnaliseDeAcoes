@@ -3,12 +3,8 @@ import numpy as np
 from topicos.visao_geral import Geral
 
 stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
-df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
-#df = yf.download(stocks, period='1y')
-
-stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
-df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
-#df = yf.download(stocks, period='1y')
+#df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
+df = yf.download(stocks, period='2y')
 
 df_close = df['Close'].astype(np.float16)
 df_close.rename(columns={

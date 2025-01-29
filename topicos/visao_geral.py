@@ -6,7 +6,7 @@ class Geral:
     @staticmethod
     def lineplot(df):
         st.write('''
-        ### Linha do tempo (2022-2024)
+        ### Linha do tempo
         ''')
 
         fig = px.line(df)
