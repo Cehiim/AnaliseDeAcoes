@@ -6,3 +6,4 @@
 
 ## Objetivo
 Foi utilizado o histórico dos valores das ações de quatro empresas de setores distintos para explorar a biblioteca Streamlit na criação de dashboards interativos.
+Também foi usado a biblioteca `yfinance` para extrair os dados em tempo real.
