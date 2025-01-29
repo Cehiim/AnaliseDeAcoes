@@ -1,34 +1,25 @@
 import yfinance as yf
-import streamlit as st
-import plotly.express as px
+import numpy as np
+from topicos.visao_geral import Geral
 
 stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
 df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
 #df = yf.download(stocks, period='1y')
 
-df_close = df['Close']
-df_close = df_close.map(lambda x: f"{x:.2f}")
+stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
+df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
+#df = yf.download(stocks, period='1y')
+
+df_close = df['Close'].astype(np.float16)
 df_close.rename(columns={
-    'ITUB4.SA': 'Itaú',
-    'VIVT3.SA': 'Vivo',
-    'ELET3.SA': 'Eletrobrás',
-    'QBTC11.SA': 'Bitcoin'
+    'ITUB4.SA': 'Itaú (ITUB4)',
+    'VIVT3.SA': 'Vivo (VIVT3)',
+    'ELET3.SA': 'Eletrobrás (ELET3)',
+    'QBTC11.SA': 'Bitcoin (QBTC11)'
 }, inplace=True)
 
-st.write('''
-# Visão Geral
-''')
+Geral.lineplot(df_close)
 
-fig = px.line(df_close)
-fig.update_layout(
-    xaxis_title='Datas',
-    yaxis_title='Valores (R$)',
-    legend=dict(
-        title='Ações'),
-    yaxis=dict(
-        #range=[0, 60],
-        #dtick=2,
-        type='linear',
-    )
-)
-st.plotly_chart(fig)
+Geral.boxplot(df_close)
+
+Geral.table(df_close)
