@@ -43,12 +43,13 @@ class Geral:
         ''')
 
         df_resumo = df.describe().transpose()
-        new_order = ['count',	'mean',	'std',	'min', 'max',	'25%',	'50%', '75%']
+        df_resumo = df_resumo.drop(columns=['count','mean'])
+        new_order = ['min', 'max', 'std', '25%',	'50%', '75%']
         df_resumo = df_resumo[new_order]
 
         df_resumo.rename(columns={
-            'count': 'Nº de amostras',
-            'mean': 'Média',
+            #'count': 'Nº de amostras',
+            #'mean': 'Média',
             'std': 'Desvio padrão',
             'min': 'Mín.',
             'max': 'Máx.',
@@ -56,8 +57,10 @@ class Geral:
             '50%': 'Q2/Mediana (50%)',
             '75%': 'Q3 (75%)'
         }, inplace=True)
-        df_resumo.index.name = 'Ações'
+        #df_resumo.index.name = 'Ações'
 
         df_resumo['IQR'] = df_resumo['Q3 (75%)'] - df_resumo['Q1 (25%)']
+
+        df_resumo = df_resumo.map(lambda x: f'{x:.2f}')
 
         st.table(df_resumo)
