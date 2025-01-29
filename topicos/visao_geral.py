@@ -57,7 +57,6 @@ class Geral:
             '50%': 'Q2/Mediana (50%)',
             '75%': 'Q3 (75%)'
         }, inplace=True)
-        #df_resumo.index.name = 'Ações'
 
         df_resumo['IQR'] = df_resumo['Q3 (75%)'] - df_resumo['Q1 (25%)']
 

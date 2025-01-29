@@ -19,7 +19,6 @@ st.write('''
 ## Visão geral
 ''')
 
-
 Geral.lineplot(df_close)
 
 Geral.boxplot(df_close)
