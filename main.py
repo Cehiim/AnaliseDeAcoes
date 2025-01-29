@@ -1,6 +1,7 @@
 import yfinance as yf
 import numpy as np
 from topicos.visao_geral import Geral
+import streamlit as st
 
 stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
 #df = yf.download(stocks, start='2022-01-01', end='2025-01-01')
@@ -13,6 +14,11 @@ df_close.rename(columns={
     'ELET3.SA': 'Eletrobrás (ELET3)',
     'QBTC11.SA': 'Bitcoin (QBTC11)'
 }, inplace=True)
+
+st.write('''
+## Visão geral
+''')
+
 
 Geral.lineplot(df_close)
 
