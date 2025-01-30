@@ -1,16 +1,12 @@
 import streamlit as st
 import plotly.express as px
+import pandas as pd
 
 class Geral:
 
     @staticmethod
     def lineplot(df):
-        st.write('''
-        ### Linha do tempo
-        ''')
-
         fig = px.line(df)
-
         fig.update_layout(
             xaxis_title='Datas',
             yaxis_title='Valores (R$)',
@@ -18,48 +14,59 @@ class Geral:
                 'title': 'Ações',
             }
         )
-
-        st.plotly_chart(fig)
-
-    @staticmethod
-    def boxplot(df):
-        st.write('''
-        ### Distribuição
-        ''')
-
-        fig = px.box(df)
-
-        fig.update_layout(
-            xaxis_title='Ações',
-            yaxis_title='Valores (R$)'
-        )
-
         st.plotly_chart(fig)
 
     @staticmethod
     def table(df):
+        df_resumo = pd.DataFrame({
+            'Média': df.mean(),
+            'Variância': df.var(),
+            'Mínimo': df.min(),
+            'Máximo': df.max(),
+            'Q1': df.quantile(0.25),
+            'Mediana': df.quantile(0.5),
+            'Q2': df.quantile(0.75),
+            'IQR': df.quantile(0.75) - df.quantile(0.25),
+        })
+        df_resumo = df_resumo.map(lambda x: f'{x:.2f}')
+        st.table(df_resumo)
+
+    def change(df, period_input):
+        if(period_input == '7d'):
+            dias_max = 3
+        elif(period_input == '1mo' or period_input == '3mo'):
+            dias_max = 7
+        elif(period_input == '6mo'):
+            dias_max = 30
+        else:
+            dias_max = 90
+        dias = st.slider('Intervalo de retorno (dias)', min_value=1, max_value=dias_max, value=3)
+        option = st.selectbox(
+            'Opção de retorno:',
+            ('Percentual', 'Bruto')
+        )
+        if option == 'Bruto':
+            df_change = df.diff(dias)
+            fig = px.line(df_change)
+            fig.update_layout(
+                xaxis_title='Datas',
+                yaxis_title='Valores (R$)',
+                legend={
+                    'title': 'Ações',
+                }
+            )
+        else:
+            df_change = df.pct_change(dias)*100
+            fig = px.line(df_change)
+            fig.update_layout(
+                xaxis_title='Datas',
+                yaxis_title='Porcentagem',
+                legend={
+                    'title': 'Ações',
+                }
+            )
+        st.plotly_chart(fig)
         st.write('''
         ### Tabela descritiva
         ''')
-
-        df_resumo = df.describe().transpose()
-        df_resumo = df_resumo.drop(columns=['count','mean'])
-        new_order = ['min', 'max', 'std', '25%',	'50%', '75%']
-        df_resumo = df_resumo[new_order]
-
-        df_resumo.rename(columns={
-            #'count': 'Nº de amostras',
-            #'mean': 'Média',
-            'std': 'Desvio padrão',
-            'min': 'Mín.',
-            'max': 'Máx.',
-            '25%': 'Q1 (25%)',
-            '50%': 'Q2/Mediana (50%)',
-            '75%': 'Q3 (75%)'
-        }, inplace=True)
-
-        df_resumo['IQR'] = df_resumo['Q3 (75%)'] - df_resumo['Q1 (25%)']
-
-        df_resumo = df_resumo.map(lambda x: f'{x:.2f}')
-
-        st.table(df_resumo)
+        Geral.table(df_change)
