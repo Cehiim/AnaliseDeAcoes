@@ -6,7 +6,7 @@ stocks = ['ITUB4.SA', 'VIVT3.SA', 'ELET3.SA', 'QBTC11.SA']
 options = st.multiselect('Selecione uma ou mais ações', stocks)
 
 try:
-    df = yf.download(options, start='2022-01-01', end='2025-01-01')
+    df = yf.download(options, start='2024-10-01', end='2025-01-01')
 
     df_close = df['Close']
     df_close.rename(columns={
@@ -17,14 +17,14 @@ try:
         }, inplace=True)
 
     st.write('''
-    ### Linha do tempo (2024-2025)
+    ### Linha do tempo do último trimestre de 2024
     ''')
     Geral.lineplot(df_close)
 
     st.write('''
     ### Retorno
     ''')
-    Geral.change(df_close, '1y')
+    Geral.change(df_close, '3mo')
 
 except ValueError:
     st.write("Selecione pelo menos uma ação")
