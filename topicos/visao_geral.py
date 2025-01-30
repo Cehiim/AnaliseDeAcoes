@@ -19,28 +19,28 @@ class Geral:
     @staticmethod
     def table_change(df):
         df_resumo = pd.DataFrame({
-            'Média': df.mean(),
-            'Variância': df.var(),
             'Mínimo': df.min(),
             'Máximo': df.max(),
-            'Q1': df.quantile(0.25),
-            'Mediana': df.quantile(0.5),
-            'Q3': df.quantile(0.75),
+            'Variância': df.var(),
             'IQR': df.quantile(0.75) - df.quantile(0.25),
+            'Q2 - Q1': df.quantile(0.5) - df.quantile(0.25),
+            'Q3 - Q2': df.quantile(0.75) - df.quantile(0.5),
         })
         cont_negativos = []
         for column in df.columns:
-            cont_negativos.append(df.loc[df[column] < 0].shape[0])
-        df_resumo['Taxa de perda'] = cont_negativos
-        df_resumo['Taxa de perda'] = df_resumo['Taxa de perda'] / df.shape[0]
+            cont_negativos.append(df.loc[df[column] < 0].dropna().shape[0])
+        df_resumo['Taxa de baixa'] = cont_negativos
+        df_resumo['Taxa de baixa'] = df_resumo['Taxa de baixa'] / df.dropna().shape[0]
         df_resumo = df_resumo.map(lambda x: f'{x:.2f}')
         st.table(df_resumo)
 
     def change(df, period_input):
         if(period_input == '7d'):
             dias_max = 3
-        elif(period_input == '1mo' or period_input == '3mo'):
+        elif(period_input == '1mo'):
             dias_max = 7
+        elif(period_input == '3mo'):
+            dias_max = 15
         elif(period_input == '6mo'):
             dias_max = 30
         else:
@@ -52,8 +52,9 @@ class Geral:
         )
         if option == 'Bruto':
             df_change = df.diff(dias)
-            fig = px.line(df_change)
+            fig = px.bar(df_change)
             fig.update_layout(
+                barmode='group',
                 xaxis_title='Datas',
                 yaxis_title='Valores (R$)',
                 legend={
@@ -62,8 +63,9 @@ class Geral:
             )
         else:
             df_change = df.pct_change(dias)*100
-            fig = px.line(df_change)
+            fig = px.bar(df_change)
             fig.update_layout(
+                barmode='group',
                 xaxis_title='Datas',
                 yaxis_title='Porcentagem',
                 legend={
