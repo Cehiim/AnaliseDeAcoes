@@ -17,7 +17,7 @@ class Geral:
         st.plotly_chart(fig)
 
     @staticmethod
-    def table(df):
+    def table_change(df):
         df_resumo = pd.DataFrame({
             'Média': df.mean(),
             'Variância': df.var(),
@@ -25,9 +25,14 @@ class Geral:
             'Máximo': df.max(),
             'Q1': df.quantile(0.25),
             'Mediana': df.quantile(0.5),
-            'Q2': df.quantile(0.75),
+            'Q3': df.quantile(0.75),
             'IQR': df.quantile(0.75) - df.quantile(0.25),
         })
+        cont_negativos = []
+        for column in df.columns:
+            cont_negativos.append(df.loc[df[column] < 0].shape[0])
+        df_resumo['Taxa de perda'] = cont_negativos
+        df_resumo['Taxa de perda'] = df_resumo['Taxa de perda'] / df.shape[0]
         df_resumo = df_resumo.map(lambda x: f'{x:.2f}')
         st.table(df_resumo)
 
@@ -66,4 +71,4 @@ class Geral:
                 }
             )
         st.plotly_chart(fig)
-        Geral.table(df_change)
+        Geral.table_change(df_change)
