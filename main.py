@@ -17,7 +17,7 @@ try:
         }, inplace=True)
 
     st.write('''
-    ### Linha do tempo
+    ### Linha do tempo (2024-2025)
     ''')
     Geral.lineplot(df_close)
 

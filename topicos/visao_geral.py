@@ -66,7 +66,4 @@ class Geral:
                 }
             )
         st.plotly_chart(fig)
-        st.write('''
-        ### Tabela descritiva
-        ''')
         Geral.table(df_change)
