@@ -22,6 +22,7 @@ class Geral:
             'Mínimo': df.min(),
             'Máximo': df.max(),
             'Variância': df.var(),
+            'Mediana': df.quantile(0.5),
             'IQR': df.quantile(0.75) - df.quantile(0.25),
             'Q2 - Q1': df.quantile(0.5) - df.quantile(0.25),
             'Q3 - Q2': df.quantile(0.75) - df.quantile(0.5),
