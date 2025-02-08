@@ -1,6 +1,6 @@
 import yfinance as yf
 from components.charts import candlestick, timeline, return_period
-from components.table import change_table, info_table
+from components.table import change_table, info_table, ma_table, corr_table
 import streamlit as st
 
 # Configuração da página
@@ -16,11 +16,12 @@ with st.sidebar:
         ("Nacional", "Internacional")
         )
     periods = {
-        'Semanal': '7d',
+        'Bissemanal': '14d',
         'Mensal': '1mo',
         'Trimestral': '3mo',
         'Bimestral': '6mo', 
-        'Anual': '1y'
+        'Anual': '1y',
+        'Bianual': '2y'
         }
     period_input = st.selectbox('Escolha um período', periods)
 
@@ -39,6 +40,8 @@ try:
         st.error("Dados não encontrados", icon="🚨")
 
     else:
+        max_days = df_close.shape[0]
+
         # Gráfico de velas
         with tab1:
             candlestick = candlestick(df, stock)
@@ -46,12 +49,21 @@ try:
 
         # Linha do tempo
         with tab2:
-            timeline = timeline(df_close)
+            window = st.slider(
+                'Janela de tempo (dias)',
+                min_value=2,
+                max_value=max_days//2,
+                value=max_days//4
+                )
+            df_ma = ma_table(df_close, window, stock)
+            timeline = timeline(df_ma)
             st.plotly_chart(timeline)
+            st.write("### Correlação com o valor real")
+            df_corr = corr_table(df_ma)
+            st.table(df_corr)
 
         # Período de retorno
         with tab3:
-            max_days = df_close.shape[0]
             days = st.slider(
                 'Intervalo de retorno (dias)',
                 min_value=1,

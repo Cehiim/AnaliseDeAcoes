@@ -2,7 +2,6 @@ import plotly.express as px
 import plotly.graph_objs as go
 
 def candlestick(df, stock):
-    # Configurar o gráfico de velas
     fig = go.Figure(data=[go.Candlestick(
         x=df.index,
         open=df['Open'][stock],
@@ -12,8 +11,6 @@ def candlestick(df, stock):
         increasing_line_color='green',
         decreasing_line_color='red'
         )])
-    
-    # Personalizar o gráfico
     fig.update_layout(
         xaxis_title='Data',
         yaxis_title='Valor',
@@ -25,33 +22,23 @@ def timeline(df):
     fig.update_layout(
         xaxis_title='Data',
         yaxis_title='Valor',
-        legend={
-            'title': 'Ações',
-        },
         xaxis_rangeslider_visible=True
     )
     return fig
 
 def return_period(df, option):
+    fig = px.bar(df)
+    fig.update_layout(
+        barmode='group',
+        xaxis_title='Data',
+        xaxis_rangeslider_visible=True
+    )
     if option == 'Bruto':
-        fig = px.bar(df)
         fig.update_layout(
-            barmode='group',
-            xaxis_title='Data',
-            yaxis_title='Valor',
-            legend={
-                'title': 'Ações',
-            }
+            yaxis_title='Valor'
         )
     else:
-        fig = px.bar(df)
         fig.update_layout(
-            barmode='group',
-            xaxis_title='Data',
-            yaxis_title='Porcentagem',
-            legend={
-                'title': 'Ações',
-            },
-            xaxis_rangeslider_visible=True
+            yaxis_title='Porcentagem'
         )
     return fig
