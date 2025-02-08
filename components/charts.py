@@ -1,40 +1,57 @@
-import streamlit as st
 import plotly.express as px
-from components.table import info_table
+import plotly.graph_objs as go
+
+def candlestick(df, stock):
+    # Configurar o gráfico de velas
+    fig = go.Figure(data=[go.Candlestick(
+        x=df.index,
+        open=df['Open'][stock],
+        high=df['High'][stock],
+        low=df['Low'][stock],
+        close=df['Close'][stock],
+        increasing_line_color='green',
+        decreasing_line_color='red'
+        )])
+    
+    # Personalizar o gráfico
+    fig.update_layout(
+        xaxis_title='Data',
+        yaxis_title='Valor',
+    )
+    return fig
 
 def timeline(df):
     fig = px.line(df)
     fig.update_layout(
-        xaxis_title='Datas',
-        yaxis_title='Valores (R$)',
+        xaxis_title='Data',
+        yaxis_title='Valor',
         legend={
             'title': 'Ações',
-        }
+        },
+        xaxis_rangeslider_visible=True
     )
-    st.plotly_chart(fig)
+    return fig
 
-def gain_period(df, option):
+def return_period(df, option):
     if option == 'Bruto':
-        df_change = df.diff(dias)
-        fig = px.bar(df_change)
+        fig = px.bar(df)
         fig.update_layout(
             barmode='group',
-            xaxis_title='Datas',
-            yaxis_title='Valores (R$)',
+            xaxis_title='Data',
+            yaxis_title='Valor',
             legend={
                 'title': 'Ações',
             }
         )
     else:
-        df_change = df.pct_change(dias)*100
-        fig = px.bar(df_change)
+        fig = px.bar(df)
         fig.update_layout(
             barmode='group',
-            xaxis_title='Datas',
+            xaxis_title='Data',
             yaxis_title='Porcentagem',
             legend={
                 'title': 'Ações',
-            }
+            },
+            xaxis_rangeslider_visible=True
         )
-    st.plotly_chart(fig)
-    info_table(df_change)
+    return fig
