@@ -11,51 +11,54 @@
 2. Executar com `streamlit run main.py`.
 
 ## Descrição
-Foi utilizado o histórico dos valores das ações da Vivo, Itaú, Eletrobrás e Bitcoin para explorar a biblioteca Streamlit na criação de dashboards interativos.
+### Candlesticks
+![image](https://github.com/user-attachments/assets/3558a1e3-8eab-4480-9a8b-1562c7f83f4d)
 
-## Resultados
-![image](https://github.com/user-attachments/assets/8d616183-5619-4d7c-9e7c-e91cb0e2a053)
+* Apresenta uma visão geral contendo o valor de abertura, fechamento, máximo e mínimo de cada dia.
+* A cor verde indica um valor de fechamento maior que o de abertura, enquanto o vermelho indica o contrário.
 
-Foi criado um gráfico de linha com os dados de fechamento de preço de cada dia durante o período de 01/10/2024 até 01/01/2025.
+### Gráfico de linhas
+![image](https://github.com/user-attachments/assets/1c3da1ef-b2ae-43bf-8efc-d5b86cad74b5)
 
-![image](https://github.com/user-attachments/assets/6de0fb88-7a6d-4fe1-b0fa-a8abb9909207)
-![image](https://github.com/user-attachments/assets/dc2b3e4b-68f4-46a5-9e0e-3e1bba1ebadb)
+* Apresenta uma série temporal do valor de fechamento de cada dia e as médias móveis.
+* Há um controle deslizante para definir a janela de tempo das médias móveis. O padrão foi definido como um 1/4 aproximado do número de amostras totais.
+* A linha branca indica o valor real, a verde indica a média móvel simples (SMA) e a vermelha indica a média móvel exponencial (EMA).
 
-Foi criado um gráfico de barras que apresenta a diferença de preços durante um intervalo de tempo, também é possível alternar em mostrar as diferenças em porcentagem ou em valor bruto.
+### Gráfico de barras
+![image](https://github.com/user-attachments/assets/2f74b709-135d-4f36-9ddf-f94cfb395552)
 
-![image](https://github.com/user-attachments/assets/8edaf502-434c-4def-8c9b-f78f7a4099ee)
-
-Foi criado uma tabela com base no gráfico de retorno para auxiliar na análise. Com os valores mínimos, valores máximos, variância, IQR (intervalo interquartílico), diferença da mediana com o 1º quartil, diferença do 3º quartil com a mediana e a taxa de baixa (qtd. de baixas ÷ qtd. de instâncias)
+* Apresenta a diferença do valor de fechamento em um intervalo de tempo.
+* Há um controle deslizante para definir o intervalo de retorno em que será comparado. O padrão foi definido como um 1/4 aproximado do número de amostras totais.
+* Há uma caixa de seleção para optar em visualizar os valores em porcentagem ou em forma bruta.
+* Há uma tabela reunindo medidas estatísticas referentes ao gráfico.
 
 ## Insights
-
-### Vivo
-![image](https://github.com/user-attachments/assets/62c2bc3e-7d0a-4037-a330-30d917b17905)
-
-* É possível visualizar uma taxa maior de baixas, porém a partir da 3ª semana de dezembro os picos de prejuízo passaram a diminuir de tamanho, o que pode dar mais segurança no investimento.
-* Não há muita consistência no comportamento dos retornos positivos, o que torna difícil de prever um bom resultado.
-* A diferença entre quartis mostra que considerando apenas os dados normalizados, houve mais retornos abaixo do valor da mediana do que acima.
+* Foi utilizado o histórico trimestral (07/11/2024 - 07/02/2025) dos valores das ações do Itaú e Eletrobrás para a análise de dados com o dashboard desenvolvido.
+* Foi usado o valor padrão de 15 dias nos controles deslizantes.
 
 ### Itaú
-![image](https://github.com/user-attachments/assets/c0512794-1c19-4b23-a585-b860c134beb7)
+![image](https://github.com/user-attachments/assets/b082c441-38c3-46ef-b56e-27caa5a59ec3)
 
-* A partir da 3ª semana de dezembro os picos de prejuízo passaram a diminuir de tamanho, o que pode dar mais segurança no investimento.
-* Não há muita consistência no comportamento dos retornos positivos, o que torna o investimento mais arriscado.
+* Próximo ao dia 12/01 é possível observar uma maior estabilidade na SMA, o que indica uma redução na queda de preços e do risco.
+* O cruzamento da linha real com a SMA indica uma tendência de valorização.
+
+![image](https://github.com/user-attachments/assets/8ec5da7d-5e5d-4836-af36-eee8120ef025)
+
+* Dia 13/01 e 14/01 seriam períodos ideais para comprar e aproveitar a valorização.
 
 ### Eletrobrás
-![image](https://github.com/user-attachments/assets/f16e6523-abc3-4029-8105-57126131a5e7)
+![image](https://github.com/user-attachments/assets/2a145f91-b4e6-4287-bbf7-c660b7935191)
 
-* Durante a última semana de dezembro, os retornos variaram menos e estavam próximos do normal.
-* De acordo com a diferença de quartis, houve mais valores normais acima da mediana, porém deve-se ressaltar que a mediana tem um abaixo de 0.
+* Próximo ao dia 12/01 é possível observar uma maior estabilidade na SMA, o que indica uma redução na queda de preços e do risco.
+* O cruzamento da linha real com a SMA indica uma tendência de valorização.
+* O intervalo de oportunidade é curto, é necessário acompanhar com atenção.
 
-### Bitcoin
-![image](https://github.com/user-attachments/assets/9e4a0f51-0e27-4a39-a33e-5990678b714d)
+![image](https://github.com/user-attachments/assets/a8faefdc-0abd-42c4-88fb-f6d25dfaadfa)
 
-* Analisando o valor da variância e do IQR, é possível afirmar que as ações do Bitcoin tem uma volatilidade anormal, o que aumenta o risco de investimento.
-* Apesar de haver pouca frequência de baixas e o pico de retorno positivo ser maior que o de retorno negativo, é possível visualizar uma tendência de aumento no prejuízo em retornos negativos, ou seja, no pior caso haverá um prejuízo maior que os passados.
-* Além disso, há uma tendência do valor de returnos positivos reduzirem, visto que durante a 3ª semana de novembro os picos de valorização diminuíram progressivamente.
+* Próximo ao dia 02/02 é possível observar uma maior estabilidade na EMA, o que indica uma redução na valorização de preços.
+* O cruzamento da linha real com a EMA indica uma tendência de desvalorização.
 
-### Opinião
-* Acredito que a ação com menos risco dos quatro seria da Eletrobrás.
-* Poderia ser interessante acompanhar as ações da Vivo e do Itaú, pois parece que haverá uma redução do tamanho dos picos de prejuízo.
-* Por fim, acho que Bitcoin apresentará um risco de investimento maior no futuro.
+![image](https://github.com/user-attachments/assets/76248a48-d305-4c85-8cb9-59b818fbbb70)
+
+* Dia 13/01 e 14/01 seriam períodos ideais para comprar e aproveitar a valorização.
+* Dia 06/02 e 07/02 seriam períodos recomendados para vender as ações e evitar perdas.
